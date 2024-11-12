@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/FlashSale.css';
 
-
-const mongoose = require('mongoose');
-const objectId = mongoose.Types.ObjectId('1');  // Ensure a valid 24-byte hex string or integer.
-
 const FlashSale = () => {
   const [flashSaleProducts, setFlashSaleProducts] = useState([]);
-  const navigate = useNavigate();
 
   // Hardcoded flash sale products
   const staticFlashSaleProducts = [
@@ -71,13 +65,13 @@ const FlashSale = () => {
     fetchFlashSaleProducts();
   }, []);
 
-  // Handler to open the product page in a new tab
+  // Open the product in a new tab when clicked
   const handleProductClick = (productId) => {
-    navigate(`/product/${productId}`); // Navigate to the product details page
+    window.open(`/product/${productId}`, '_blank'); // Open the product page in a new tab
   };
 
-  // Combine static and fetched products
-  const combinedFlashSaleProducts = [...staticFlashSaleProducts, ...flashSaleProducts];
+  // Combine static and fetched products, limiting to the first 6 items
+  const combinedFlashSaleProducts = [...staticFlashSaleProducts, ...flashSaleProducts].slice(0, 6);
 
   return (
     <div className="flashSaleContainer">
@@ -89,8 +83,8 @@ const FlashSale = () => {
             <div
               className="flashSaleCard-data"
               onClick={() => handleProductClick(product._id)}
-              role="button" // Accessibility improvement for clickable div
-              tabIndex = {product._id}  // Valid 24-character hex ObjectId// Accessibility improvement for keyboard navigation
+              role="button"
+              tabIndex={0}
             >
               <h6>{product.name}</h6>
               <p>{product.description}</p>
